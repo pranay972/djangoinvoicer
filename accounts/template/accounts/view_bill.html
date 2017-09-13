@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style>
+		table,tr,td{
+			border:1px solid black;
+			border-collapse: collapse;
+			padding-right: 10px;
+		}
+
+		td{
+			padding-left: 10px;
+		}
+		.headers{
+			text-align: center;
+			font-weight: bold;
+		}
+		.values{
+			 text-align: right;
+		}
+	</style>
+</head>
+<body>
+	<section style="width: 100%;margin-top: 20px">
+	    <center>
+	    	<table style="width:95%;">
+			<tr>
+				<td rowspan="3" style="width:33%">
+					<h3>WARISHPIYA TRADERS</h3>
+					<p>
+						B-2, Krishna Apartment<br>
+						Plot no.9, Tigri Village<br>
+						NEW DELHI-110080<br>
+						Mob: 7838571711<br>
+						GSTIN: 07AAXPH9407K1Z1
+					</p>
+				</td>
+				<td colspan="4" style="width: 34%">
+					<center>
+						<h2>GST INVOICE</h2>
+						<h4>CREDIT</h4>	
+					</center>
+				</td>
+				<td rowspan="3" style="width: 33%">
+					<p>
+						To:<br>
+						<h3>{{ bill.to|upper }}</h3>
+				
+					</p>
+				</td>
+			</tr>
+			<tr rowspan="2">
+				<td style="width: 10%">Invoice No</td>
+				<td style="width: 10%">{{ bill.pk }}</td>
+				<td style="width: 10%">Invoice Date</td>
+				<td style="width: 10%">{{ bill.invoice_date }}</td>
+			</tr>
+			
+			
+		</table>
+		<table width="95%">
+			<tr>
+				<td class="headers">S.no.</td>
+				<td class="headers">Qty.</td>
+				
+				<td class="headers" colspan="2">Product Name</td>
+				
+				<td class="headers">HSN</td>
+				<td class="headers">Rate</td>
+				{% if bill.collection == "1" %}
+				<td class="headers">SGST @</td>
+				<td class="headers">SGST value</td>
+				<td class="headers">CGST @</td>
+				<td class="headers">CGST Value</td>
+				{% elif bill.collection == "2" %}
+				<td class="headers" colspan="2">IGST @</td>
+				<td class="headers" colspan="2">IGST Value</td>
+				{% endif %}
+				<td class="headers">Amount</td>
+			</tr>
+			{% load math %}
+			{% for p in bill.billedproducts_set.all %}
+			<tr>
+				<td>{{ forloop.counter }}</td>
+				<td>{{ p.quantity }}</td>
+				<td colspan="2">{{ p.name }}</td>
+				<td>{{ p.hsn }}</td>
+				<td>{{ p.price|floatformat:2 }}</td>
+				{% if bill.collection == "1" %}
+				<td>{{ p.category|div:2 |floatformat:2}}%</td>
+				<td>{{ p.taxTotal|div:2|floatformat:2 }}</td>
+				<td>{{ p.category|div:2|floatformat:2 }}%</td>
+				<td>{{ p.taxTotal|div:2|floatformat:2 }}</td>
+				{% elif bill.collection == "2" %}
+				<td colspan="2">{{ p.category }}%</td>
+				<td colspan="2">{{ p.taxTotal|floatformat:2 }}</td>
+				{% endif %}
+				<td>{{ p.total|floatformat:2 }}</td>
+			</tr>
+			{% endfor %}
+			
+		</table>
+		<br>
+		<table style="width: 95%">	
+			<tr>
+				<td class="headers">CLASS</td>
+				<td style="text-align: right;font-weight: bold">Taxable Value</td>
+				{% if bill.collection == "1" %}
+				<td style="text-align: right;font-weight: bold">SGST</td>
+				<td style="text-align: right;font-weight: bold">CGST</td>
+				{% elif bill.collection == "2" %}
+				<td style="text-align: right;font-weight: bold" colspan="2">IGST</td>
+				{% endif %}
+				<td style="text-align: right;font-weight: bold">TOTAL GST</td>
+				<td ></td>
+				<td style="font-weight: bold">TOTAL <span style="float: right;">{{ bill.total|floatformat:2 }}</span></td>
+			</tr>
+			<tr>
+				<td>
+					<span>GST 5%</span><br>
+					<span>GST 12%</span><br>
+					<span>GST 18%</span><br>
+					<span>GST 28%</span>
+				</td>
+				<td class="values">
+					{% for gst, price in bill.price_tax_dict.items %}
+					<span>{{ price|floatformat:2 }}</span><br>
+					{% endfor %}
+				</td>
+				{% if bill.collection == "1" %}
+				<td class="values">
+					{% for gst, tax in bill.tax_dict.items %}
+					<span>{{ tax|div:2|floatformat:2 }}</span><br>
+					{% endfor %}
+				</td>
+				<td class="values">
+					{% for gst, tax in bill.tax_dict.items %}
+					<span>{{ tax|div:2|floatformat:2 }}</span><br>
+					{% endfor %}
+				</td>
+				{% elif bill.collection == "2" %}
+				<td class="values" colspan="2">
+					{% for gst, tax in bill.tax_dict.items %}
+					<span>{{ tax|floatformat:2 }}</span><br>
+					{% endfor %}
+				</td>
+				{% endif %}
+				<td  class="values">
+					{% for gst, tax in bill.tax_dict.items %}
+					<span>{{ tax|floatformat:2 }}</span><br>
+					{% endfor %}
+				</td>
+				<td>
+					<span>Total Items- &nbsp;&nbsp;&nbsp;</span><span>{{ bill.billedproducts_set.count }}</span><br>
+					<span>Total Qty-&nbsp;&nbsp;&nbsp;</span><span>{{ bill.totalQuantity }}</span>
+				</td>
+				<td>
+					<br>
+					{% if bill.collection == "1" %}
+					<span>SGST PAYBLE</span><span style="float: right;">{{ bill.tax|div:2|floatformat:2 }}</span><br><br>
+					<span>CGST PAYBLE</span><span style="float: right;">{{ bill.tax|div:2|floatformat:2 }}</span>
+					{% elif bill.collection == "2" %}
+					<span>IGST PAYBLE</span><span style="float: right;">{{ bill.tax|floatformat:2 }}</span>
+					{% endif %}
+				</td>
+			</tr>
+			<!--
+			<tr>
+				<td style="border: 0px;font-weight: bold">TOTAL</td>
+				<td class="values" style="border: 0px">0.00</td>
+				{% if bill.collection == "1" %}
+				<td class="values" style="border: 0px">0.00</td>
+				<td class="values" style="border: 0px">0.00</td>
+				{% elif bill.collection == "2" %}
+				<td class="values" style="border: 0px" colspan="2">0.00</td>
+				{% endif %}
+				<td class="values" style="border: 0px">0.00</td>
+				<td class="values" style="border: 0px"></td>
+				<td></td>
+			</tr>
+			-->
+			<tr>
+				<td colspan="6">
+					<span style="font-size: 12px"><br></span>
+				</td>
+				<td rowspan="2">
+					
+						<p>
+						<h3>GRAND TOTAL</h3>
+						<h3 style="text-align: right">{{ bill.grandTotal }}</h3>
+					</p>
+				</td>
+			</tr>
+			<!--<tr>
+				<td colspan="4">
+					<span style="font-size: 12px">MSG</span>
+				</td>
+				<td colspan="2"></td>
+			</tr>-->
+			<tr>
+				<td colspan="3">
+					<b><u>Terms &amp; Conditions</u></b>
+					<p>1. Payment due immediately after invoice date <br>
+					2. All disputes under Delhi state juridisction only</p>
+				</td>
+				<td colspan="3">
+					<b>FOR WARISHPIYA TRADERS</b>
+					<br><br>
+					<span style="text-align: right;"><b>Authorized signatory</b></span>
+				</td>
+			</tr>
+		</table>
+	    </center>
+		
+	</section>
+</body>
+</html>

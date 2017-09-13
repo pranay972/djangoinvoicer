@@ -1,0 +1,166 @@
+{% extends 'accounts/base.html' %}
+
+{% block content %}
+
+	<body>
+		
+		{% include 'accounts/navigation.html' %}
+
+		<div class="container">
+			
+			<div class="row">
+				<blockquote>
+					<h4>Products</h4>
+				</blockquote>
+			</div>
+
+			<script type="text/javascript">
+				$(document).ready(function(){
+					$('ul.tabs').tabs();
+					$('.modal').modal();
+					$('select').material_select();
+
+					{% if product_success or group_sucess %}
+					Materialize.toast("Successfully Added", 1500)
+					{% endif %}
+				});
+
+				function popup(mylink, windowname) { 
+					if (! window.focus) return true; 
+					var href; 
+					if (typeof(mylink) == 'string') 
+						href=mylink; 
+					else 
+						href=mylink.href; 
+					var win = window.open(href, windowname, 'width=600,height=300, left=250,scrollbars=yes');
+					win.onload = function() {
+						win.onbeforeunload = function(){
+							location.reload(true); //will refresh page after popup close
+						}
+					}
+					return false; 
+				}
+
+				function delProduct(id){
+					if (confirm("Are you sure you want to delete the product?")){
+						$.post(
+							"/del_product/"+id,
+							{
+								'csrfmiddlewaretoken' : '{{ csrf_token }}'
+							},
+							function (data, status){
+								if (status == "success"){
+									location.reload();
+								}
+							}
+						);
+					}
+				}
+
+				function delGroup(id){
+					if (confirm("Are you sure you want to delete the Group?")){
+						$.post(
+							"/del_group/"+id,
+							{
+								'csrfmiddlewaretoken' : '{{ csrf_token }}'
+							},
+							function (data, status){
+								if (status == "success"){
+									var url = window.location.href;
+									window.location.href = url;
+								}
+							}
+						);
+					}
+				}
+
+			</script>
+
+			<div class="row">
+
+				<div id="products" class="container">
+					<div class="row">
+
+						<!-- Add Product Modal -->
+
+						<!-- trigger -->
+						<a href="#product_add_modal" class="btn right waves-effect waves-light">
+							Add Product
+						</a>
+
+						<!--structure -->
+						<div id="product_add_modal" class="modal">
+							<form method="POST" action="/add_product">
+								{% csrf_token %}
+								<div class="modal-content">
+									<div class="input-field col s6">
+										{{ product_add_form.name.errors }}
+										{{ product_add_form.name }}
+										<label for="{{ product_add_form.name.id_for_label }}">Name</label>
+									</div>
+									<div class="input-field col s6">
+										{{ product_add_form.alias.errors }}
+										{{ product_add_form.alias }}
+										<label for="{{ product_add_form.alias.id_for_label }}">Alias</label>
+									</div>
+									<!--<div class="input-field col s6">
+										{{ product_add_form.price.errors }}
+										{{ product_add_form.price }}
+										<label for="{{ product_add_form.price.id_for_label }}">Price</label>
+									</div>
+									<div class="input-field col s6">
+										{{ product_add_form.inventory.errors }}
+										{{ product_add_form.inventory }}
+										<label for="{{ product_add_form.inventory.id_for_label }}">Inventory</label>
+									</div>-->
+								</div>
+								<div class="modal-footer">
+									<button type="submit" class="modal-action btn waves-effect waves-light">Add</button>
+								</div>
+							</form>
+						</div>
+
+
+					</div>
+					<div class="row">
+						<table class="striped centered">
+							<thead>
+								<tr>
+									<th>S.No</th>
+									<th>Name</th>
+									<th>Alias</th>
+									<th>Price</th>
+									<th>Inventory</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for product in products %}
+								<tr>
+									<td>{{ forloop.counter }}</td>
+									<td>{{ product.name }}</td>
+									<td>{{ product.alias }}</td>
+									<td>{{ product.price }}</td>
+									<td>{{ product.inventory }}</td>
+									<td>
+										<a href="" onclick="popup('/edit_product/{{ product.pk }}', 'temp');return true;">
+											<i class="material-icons">edit</i>
+										</a>
+										<a href="" onclick="delProduct({{ product.pk }}); return false;">
+											<i class="material-icons">delete</i>
+										</a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+	</body>
+
+{% endblock %}
