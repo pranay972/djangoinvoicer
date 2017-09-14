@@ -3,11 +3,11 @@
 {% block content %}
 
 	<body>
-		
+
 		{% include 'accounts/navigation.html' %}
 
 		<div class="container">
-			
+
 			<div class="row">
 				<blockquote>
 					<h4>Products</h4>
@@ -25,20 +25,20 @@
 					{% endif %}
 				});
 
-				function popup(mylink, windowname) { 
-					if (! window.focus) return true; 
-					var href; 
-					if (typeof(mylink) == 'string') 
-						href=mylink; 
-					else 
-						href=mylink.href; 
+				function popup(mylink, windowname) {
+					if (! window.focus) return true;
+					var href;
+					if (typeof(mylink) == 'string')
+						href=mylink;
+					else
+						href=mylink.href;
 					var win = window.open(href, windowname, 'width=600,height=300, left=250,scrollbars=yes');
 					win.onload = function() {
 						win.onbeforeunload = function(){
 							location.reload(true); //will refresh page after popup close
 						}
 					}
-					return false; 
+					return false;
 				}
 
 				function delProduct(id){
@@ -103,7 +103,7 @@
 										{{ product_add_form.alias }}
 										<label for="{{ product_add_form.alias.id_for_label }}">Alias</label>
 									</div>
-									<!--<div class="input-field col s6">
+									<div class="input-field col s6">
 										{{ product_add_form.price.errors }}
 										{{ product_add_form.price }}
 										<label for="{{ product_add_form.price.id_for_label }}">Price</label>
@@ -112,7 +112,7 @@
 										{{ product_add_form.inventory.errors }}
 										{{ product_add_form.inventory }}
 										<label for="{{ product_add_form.inventory.id_for_label }}">Inventory</label>
-									</div>-->
+									</div>
 								</div>
 								<div class="modal-footer">
 									<button type="submit" class="modal-action btn waves-effect waves-light">Add</button>

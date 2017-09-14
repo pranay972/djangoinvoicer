@@ -52,8 +52,8 @@ class ProductAddForm(forms.ModelForm):
 
 	name = forms.CharField(max_length=100, label = "Name")
 	alias = forms.CharField(max_length=100, label = "Alias")
-	#price = forms.FloatField(label = "Price")
-	#inventory = forms.IntegerField(required=False, label = "Inventory")
+	price = forms.FloatField(label = "Price")
+	inventory = forms.IntegerField(required=False, label = "Inventory")
 
 class ProductGroupAddForm(forms.ModelForm):
 
@@ -97,7 +97,7 @@ class TaxForm(forms.ModelForm):
 		model = Tax
 		fields = ['tax', ]
 
-''' 
+'''
 
 class Bills (models.Model):
 	invoice_date = models.DateField(default=timezone.now())
@@ -114,4 +114,3 @@ class BilledProducts (models.Model):
 		return self.name
 
 '''
-
