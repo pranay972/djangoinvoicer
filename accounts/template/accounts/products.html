@@ -113,7 +113,13 @@
 										{{ product_add_form.inventory }}
 										<label for="{{ product_add_form.inventory.id_for_label }}">Inventory</label>
 									</div>
+                                    <div class="input-field col s6">
+                                        {{ product_add_form.hsn_code.errors }}
+										{{ product_add_form.hsn_code }}
+										<label for="{{ product_add_form.hsn_code.id_for_label }}">HSN Code</label>
+                                    </div>
 								</div>
+                                <div class="clearfix"></div>
 								<div class="modal-footer">
 									<button type="submit" class="modal-action btn waves-effect waves-light">Add</button>
 								</div>

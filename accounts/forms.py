@@ -1,4 +1,5 @@
 from django import forms
+from django.core.validators import MinValueValidator
 from .models import Product, ProductGroup, Tax, Bills
 from django.core.serializers.json import DjangoJSONEncoder
 import json
@@ -52,8 +53,11 @@ class ProductAddForm(forms.ModelForm):
 
 	name = forms.CharField(max_length=100, label = "Name")
 	alias = forms.CharField(max_length=100, label = "Alias")
-	price = forms.FloatField(label = "Price")
-	inventory = forms.IntegerField(required=False, label = "Inventory")
+	price = forms.DecimalField(label = "Price", max_digits=9, decimal_places=2,
+							   validators=[MinValueValidator(0)])
+	hsn_code = forms.CharField(label="HSN Code", required=False)
+	inventory = forms.IntegerField(required=False, label = "Inventory",
+								   validators=[MinValueValidator(0)])
 
 class ProductGroupAddForm(forms.ModelForm):
 
