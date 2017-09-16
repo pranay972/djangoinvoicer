@@ -158,7 +158,13 @@
 				if(i>=0 && i<data.length){
 					$('#price_custom').val(data[i].price);
 					$('#hsn_custom').val(data[i].hsn_code);
+					$('#id_custom').val(data[i].id);
 				}
+				else{
+					$('#price_custom').val('');
+					$('#id_custom').val(-1);
+				}
+				console.log('this is id : ' + $('#id_custom').val());
 			});
 
 			$('#quantity_custom').change(function() {
@@ -256,6 +262,8 @@
 					</select>
 				</div>
 				<div class="col s2">
+
+					<input type="number" id="id_custom" value="-1" hidden="true"></input>
 					<button onclick="customAddToForm(); return false;" class="btn waves-light waves effect">Add</button>
 				</div>
 			</div>
