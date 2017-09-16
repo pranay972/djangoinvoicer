@@ -13,13 +13,10 @@ urlpatterns = [
 
 	#popup_views
 	url(r'^edit_product/(?P<id>[0-9]+)/?$', views.edit_product_view, name='edit_product'),	
-	url(r'^edit_group/(?P<id>[0-9]+)/?$', views.edit_group_view, name='edit_group'),	
 
 	#helpers
 	url(r'^add_product/?$', views.add_product_helper, name='add_products'),
 	url(r'^del_product/(?P<id>[0-9]+)/?$', views.del_product_helper, name='del_products'),
-	url(r'^add_group/?$', views.add_group_helper, name='add_group'),
-	url(r'^del_group/(?P<id>[0-9]+)/?$', views.del_group_helper, name='del_groups'),
 
 	#apis
 	url(r'^search_product/(?P<query>[a-zA-Z0-9\-]+)/?$', views.search_product, name='search_product'),	

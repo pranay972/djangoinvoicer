@@ -7,26 +7,10 @@ from django.utils import timezone
 class Product (models.Model):
 	name = models.CharField(max_length=100)
 	alias = models.CharField(max_length=100)
-	price = models.DecimalField(max_digits=9, decimal_places=2,
-								validators=[MinValueValidator(0)])
+	price = models.FloatField(validators=[MinValueValidator(0)])
 	inventory = models.IntegerField(default=0,
 									validators=[MinValueValidator(0)])
 	hsn_code = models.CharField(max_length=8, blank=True)
-
-	def __str__ (self):
-		return self.name
-
-class ProductGroup (models.Model):
-	name = models.CharField(max_length=100)
-	alias = models.CharField(max_length=100)
-	products = models.ManyToManyField(Product, blank=True)
-
-	def get_price(self):
-		return sum([i.price for i in self.products.all()])
-	def get_inventory(self):
-		if self.products.count() < 1:
-			return 0
-		return min([i.inventory for i in self.products.all()])
 
 	def __str__ (self):
 		return self.name

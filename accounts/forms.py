@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import MinValueValidator
-from .models import Product, ProductGroup, Tax, Bills
+from .models import Product, Tax, Bills
 from django.core.serializers.json import DjangoJSONEncoder
 import json
 from django.db import models
@@ -53,41 +53,10 @@ class ProductAddForm(forms.ModelForm):
 
 	name = forms.CharField(max_length=100, label = "Name")
 	alias = forms.CharField(max_length=100, label = "Alias")
-	price = forms.DecimalField(label = "Price", max_digits=9, decimal_places=2,
-							   validators=[MinValueValidator(0)])
+	price = forms.FloatField(label = "Price", validators=[MinValueValidator(0)])
 	hsn_code = forms.CharField(label="HSN Code", required=False)
 	inventory = forms.IntegerField(required=False, label = "Inventory",
 								   validators=[MinValueValidator(0)])
-
-class ProductGroupAddForm(forms.ModelForm):
-
-	class Meta:
-		model = ProductGroup
-		fields = ['name', 'alias', 'products']
-
-	name = forms.CharField(max_length=100)
-	alias = forms.CharField(max_length=100)
-	products = forms.ModelMultipleChoiceField(queryset=Product.objects.all())
-
-
-	def save (self, commit=True):
-
-		instance = forms.ModelForm.save(self, False)
-
-		old_save_m2m = self.save_m2m
-		def save_m2m():
-			old_save_m2m()
-
-			instance.produts_set.clear()
-			for product in self.cleaned_data['products']:
-				instance.products.add(product)
-
-
-		if commit:
-			instance.save()
-			self.save_m2m()
-
-		return instance
 
 class BillGenForm(forms.ModelForm):
 	class Meta:

@@ -1,0 +1,41 @@
+{% extends 'accounts/base.html' %}
+
+{% block content %}
+<body>
+{% include 'accounts/navigation.html' %}
+<form method="POST" action="/add_product">
+    {% csrf_token %}
+    <div class="modal-content">
+        <div class="input-field col s6">
+            {{ form.name.errors }}
+            {{ form.name }}
+            <label for="{{ form.name.id_for_label }}">Name</label>
+        </div>
+        <div class="input-field col s6">
+            {{ form.alias.errors }}
+            {{ form.alias }}
+            <label for="{{ form.alias.id_for_label }}">Alias</label>
+        </div>
+        <div class="input-field col s6">
+            {{ form.price.errors }}
+            {{ form.price }}
+            <label for="{{ form.price.id_for_label }}">Price</label>
+        </div>
+        <div class="input-field col s6">
+            {{ form.inventory.errors }}
+            {{ form.inventory }}
+            <label for="{{ form.inventory.id_for_label }}">Inventory</label>
+        </div>
+        <div class="input-field col s6">
+            {{ form.hsn_code.errors }}
+            {{ form.hsn_code }}
+            <label for="{{ form.hsn_code.id_for_label }}">HSN Code</label>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="modal-footer">
+        <button type="submit" class="modal-action btn waves-effect waves-light">Add</button>
+    </div>
+</form>
+</body>
+{% endblock %}
