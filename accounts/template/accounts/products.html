@@ -80,47 +80,10 @@
 
 				<div id="products" class="container">
 					<div class="row">
-
-						<!-- Add Product Modal -->
-
 						<!-- trigger -->
-						<a href="#product_add_modal" class="btn right waves-effect waves-light">
+						<a href="/add_product" class="btn right waves-effect waves-light">
 							Add Product
 						</a>
-
-						<!--structure -->
-						<div id="product_add_modal" class="modal">
-							<form method="POST" action="/add_product">
-								{% csrf_token %}
-								<div class="modal-content">
-									<div class="input-field col s6">
-										{{ product_add_form.name.errors }}
-										{{ product_add_form.name }}
-										<label for="{{ product_add_form.name.id_for_label }}">Name</label>
-									</div>
-									<div class="input-field col s6">
-										{{ product_add_form.alias.errors }}
-										{{ product_add_form.alias }}
-										<label for="{{ product_add_form.alias.id_for_label }}">Alias</label>
-									</div>
-									<div class="input-field col s6">
-										{{ product_add_form.price.errors }}
-										{{ product_add_form.price }}
-										<label for="{{ product_add_form.price.id_for_label }}">Price</label>
-									</div>
-									<div class="input-field col s6">
-										{{ product_add_form.inventory.errors }}
-										{{ product_add_form.inventory }}
-										<label for="{{ product_add_form.inventory.id_for_label }}">Inventory</label>
-									</div>
-								</div>
-								<div class="modal-footer">
-									<button type="submit" class="modal-action btn waves-effect waves-light">Add</button>
-								</div>
-							</form>
-						</div>
-
-
 					</div>
 					<div class="row">
 						<table class="striped centered">
