@@ -42,7 +42,10 @@ def gen_bill_view(request):
 	for product in Product.objects.all():
 		data.append({
 			'name' : product.name,
-			'price' : product.price
+			'price' : product.price,
+            'id' : product.id,
+            'inventory' : product.inventory,
+            'hsn_code' : product.hsn_code
 			})
 	import json
 	data = json.dumps(data)
@@ -94,7 +97,7 @@ def index(request):
 
 	#tax form
 	tax_form = TaxForm(instance = instance)
-	
+
 	return render(request, 'accounts/index.html', {'bill_count' : bc, 'product_count':pc})
 
 
@@ -133,7 +136,7 @@ def login_view(request):
 				invalid = True
 
 	else:
-		
+
 		form = LoginForm()
 
 	return render(request, 'accounts/login.html', {'form' : form, 'invalid': invalid})
@@ -188,7 +191,7 @@ def gen_bill(request):
 
 			billed = json.loads(request.POST['names_gst_and_quantities'])
 			billed_list = []
-			for x in billed: 
+			for x in billed:
 				billed_product = BilledProducts.objects.create(
 					name = x['name'],
 					price = x['price'],
@@ -226,4 +229,3 @@ def search_product(request, query):
 		return HttpResponse(data)
 	else:
 		raise Http404()
-
