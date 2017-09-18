@@ -57,6 +57,7 @@
 			var quantity = document.getElementById('quantity_custom').value.trim();
 			var category = document.getElementById('category_custom').value.trim();
 			var hsn = document.getElementById('hsn_custom').value;
+            var id = document.getElementById('id_custom').value;
 
 			if (name == "" || name.length > 200){
 				Materialize.toast("Enter Valid Name", 1500);
@@ -70,6 +71,7 @@
 				Materialize.toast("Enter Valid HSN Code", 1500);
 			} else {
 				var t = {};
+				t['id'] = id;
 				t['name'] = name;
 				t['price'] = price;
 				t['quantity'] = quantity;
@@ -167,7 +169,12 @@
 				console.log('this is id : ' + $('#id_custom').val());
 			});
 
-			$('#quantity_custom').change(function() {
+
+			$('#quantity_custom').attr({
+                'max': data[i].inventory
+            });
+
+			/*$('#quantity_custom').change(function() {
 
 				x = $('#name_custom').val();
 
@@ -177,7 +184,7 @@
 				if($('#quantity_custom').val()>data[i].inventory){
 					$('#quantity_custom').val(data[i].inventory);
 				}
-			});
+			});*/
 
 		});
 	</script>
@@ -191,7 +198,7 @@
 				<h4>Generate Bill</h4>
 			</blockquote>
 		</div>
-{{ data }}
+
 		<form  id="form">
 
 			{% csrf_token %}
@@ -262,7 +269,6 @@
 					</select>
 				</div>
 				<div class="col s2">
-
 					<input type="number" id="id_custom" value="-1" hidden="true"></input>
 					<button onclick="customAddToForm(); return false;" class="btn waves-light waves effect">Add</button>
 				</div>
