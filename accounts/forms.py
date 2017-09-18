@@ -42,33 +42,34 @@ class JSONField(models.TextField):
 #create forms here
 
 class LoginForm(forms.Form):
-	user = forms.CharField(max_length=100)
-	password = forms.CharField(widget=forms.PasswordInput)
+    user = forms.CharField(max_length=100)
+    password = forms.CharField(widget=forms.PasswordInput)
 
 class ProductAddForm(forms.ModelForm):
 
-	class Meta:
-		model = Product
-		fields = ['name', 'alias']
+    class Meta:
+        model = Product
+        fields = ['name', 'alias']
 
-	name = forms.CharField(max_length=100, label = "Name")
-	alias = forms.CharField(max_length=100, label = "Alias")
-	price = forms.FloatField(label = "Price", validators=[MinValueValidator(0)])
-	hsn_code = forms.CharField(label="HSN Code", required=False)
-	inventory = forms.IntegerField(required=False, label = "Inventory",
-								   validators=[MinValueValidator(0)])
+    name = forms.CharField(max_length=100, label = "Name")
+    alias = forms.CharField(max_length=100, label = "Alias")
+    price = forms.FloatField(label = "Price", validators=[MinValueValidator(0)])
+    hsn_code = forms.CharField(label="HSN Code", required=False)
+    inventory = forms.IntegerField(required=False, label = "Inventory",
+                                   validators=[MinValueValidator(0)])
+    tax = forms.FloatField(validators=[MinValueValidator(0)])
 
 class BillGenForm(forms.ModelForm):
-	class Meta:
-		model = Bills
-		fields = ['invoice_date', 'to', 'collection']
+    class Meta:
+        model = Bills
+        fields = ['invoice_date', 'to', 'collection']
 
-	names_gst_and_quantities = JSONField()
+    names_gst_and_quantities = JSONField()
 
 class TaxForm(forms.ModelForm):
-	class Meta:
-		model = Tax
-		fields = ['tax', ]
+    class Meta:
+        model = Tax
+        fields = ['tax', ]
 
 '''
 
