@@ -86,7 +86,7 @@
 						<td>` + t.price + `</td>
 						<td>` + t.hsn + `</td>
 						<td>` + t.category + `%</td>
-						<td>` + t.price*t.quantity + `</td>
+						<td>` + t.price*t.quantity*(1+(t.category/100)) + `</td>
 					</tr>
 					`
 				);
@@ -98,31 +98,6 @@
 			}
 
 		}
-
-		// function addToForm(){
-		// 	var quantity = document.getElementById('quantities').value
-
-		// 	if (quantity != "" && quantity < 100){
-		// 		temp['quantity'] = quantity;
-		// 		selected.push(temp);
-		// 		$('#add_product').append(
-		// 			`
-		// 			<tr>
-		// 				<td>` + temp.name + `</td>
-		// 				<td>` + temp.alias + `</td>
-		// 				<td>` + temp.quantity + `</td>
-		// 				<td>` + temp.price + `</td>
-		// 				<td>` + temp.price*temp.quantity + `</td>
-		// 			</tr>
-		// 			`
-		// 		);
-		// 		temp = {};
-		// 		document.getElementById('quantities').value = ""
-		// 		document.getElementById('names').value = ""
-		// 	} else {
-		// 		Materialize.toast("Enter Valid Quantity", 1500)
-		// 	}
-		// }
 
 		$(document).ready(function(){
 
@@ -161,30 +136,15 @@
 					$('#price_custom').val(data[i].price);
 					$('#hsn_custom').val(data[i].hsn_code);
 					$('#id_custom').val(data[i].id);
+					$('#quantity_custom').attr({
+                        'max': data[i].inventory
+                    });
 				}
 				else{
 					$('#price_custom').val('');
 					$('#id_custom').val(-1);
 				}
-				console.log('this is id : ' + $('#id_custom').val());
 			});
-
-
-			$('#quantity_custom').attr({
-                'max': data[i].inventory
-            });
-
-			/*$('#quantity_custom').change(function() {
-
-				x = $('#name_custom').val();
-
-				for(var i=0; i<data.length; i++)
-					if(x==data[i].name) break;
-
-				if($('#quantity_custom').val()>data[i].inventory){
-					$('#quantity_custom').val(data[i].inventory);
-				}
-			});*/
 
 		});
 	</script>
@@ -273,24 +233,6 @@
 					<button onclick="customAddToForm(); return false;" class="btn waves-light waves effect">Add</button>
 				</div>
 			</div>
-
-			<!-- <div class="row">
-				<div class="input-field col s4">
-					<input type="text" id="names" class="autocomplete">
-					<label for="names">Name</label>
-
-					</ul>
-				</div>
-				<div class="input-field col s4">
-					<input type="text" id="quantities">
-					<label for="quantities">Quantity</label>
-				</div>
-				<div class="input-field col s4">
-					<button onclick="addToForm(); return false;" class="btn waves-light waves-effect">
-						Add
-					</button>
-				</div>
-			</div> -->
 		</form>
 
 	</div>
