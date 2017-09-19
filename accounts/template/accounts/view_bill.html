@@ -3,24 +3,27 @@
 <head>
 	<title></title>
 	<style>
-		table,tr,td{
-			border:1px solid black;
+		table, tr, td {
+			border: 1px solid black;
 			border-collapse: collapse;
 			padding-right: 10px;
 		}
 
-		td{
+		td {
 			padding-left: 10px;
 		}
-		.headers{
+
+		.headers {
 			text-align: center;
 			font-weight: bold;
 		}
-		.values{
+
+		.values {
 			 text-align: right;
 		}
 	</style>
 </head>
+
 <body>
 	<section style="width: 100%;margin-top: 20px">
 	    <center>
@@ -56,8 +59,6 @@
 				<td style="width: 10%">Invoice Date</td>
 				<td style="width: 10%">{{ bill.invoice_date }}</td>
 			</tr>
-			
-			
 		</table>
 		<table width="95%">
 			<tr>
@@ -99,7 +100,6 @@
 				<td>{{ p.total|floatformat:2 }}</td>
 			</tr>
 			{% endfor %}
-			
 		</table>
 		<br>
 		<table style="width: 95%">	
@@ -114,7 +114,9 @@
 				{% endif %}
 				<td style="text-align: right;font-weight: bold">TOTAL GST</td>
 				<td ></td>
-				<td style="font-weight: bold">TOTAL <span style="float: right;">{{ bill.total|floatformat:2 }}</span></td>
+				<td style="font-weight: bold">
+                    TOTAL <span style="float: right;">{{ bill.total|floatformat:2 }}</span>
+                </td>
 			</tr>
 			<tr>
 				<td>
@@ -152,34 +154,26 @@
 					{% endfor %}
 				</td>
 				<td>
-					<span>Total Items- &nbsp;&nbsp;&nbsp;</span><span>{{ bill.billedproducts_set.count }}</span><br>
-					<span>Total Qty-&nbsp;&nbsp;&nbsp;</span><span>{{ bill.totalQuantity }}</span>
+					<span>Total Items- &nbsp;&nbsp;&nbsp;</span>
+                    <span>{{ bill.billedproducts_set.count }}</span><br>
+					<span>Total Qty-&nbsp;&nbsp;&nbsp;</span>
+                    <span>{{ bill.totalQuantity }}</span>
 				</td>
 				<td>
 					<br>
 					{% if bill.collection == "1" %}
-					<span>SGST PAYBLE</span><span style="float: right;">{{ bill.tax|div:2|floatformat:2 }}</span><br><br>
-					<span>CGST PAYBLE</span><span style="float: right;">{{ bill.tax|div:2|floatformat:2 }}</span>
+					<span>SGST PAYBLE</span>
+                    <span style="float: right;">{{ bill.tax|div:2|floatformat:2 }}</span>
+                    <br><br>
+					<span>CGST PAYBLE</span>
+                    <span style="float: right;">{{ bill.tax|div:2|floatformat:2 }}</span>
 					{% elif bill.collection == "2" %}
-					<span>IGST PAYBLE</span><span style="float: right;">{{ bill.tax|floatformat:2 }}</span>
+					<span>IGST PAYBLE</span>
+                    <span style="float: right;">{{ bill.tax|floatformat:2 }}</span>
 					{% endif %}
 				</td>
 			</tr>
-			<!--
-			<tr>
-				<td style="border: 0px;font-weight: bold">TOTAL</td>
-				<td class="values" style="border: 0px">0.00</td>
-				{% if bill.collection == "1" %}
-				<td class="values" style="border: 0px">0.00</td>
-				<td class="values" style="border: 0px">0.00</td>
-				{% elif bill.collection == "2" %}
-				<td class="values" style="border: 0px" colspan="2">0.00</td>
-				{% endif %}
-				<td class="values" style="border: 0px">0.00</td>
-				<td class="values" style="border: 0px"></td>
-				<td></td>
-			</tr>
-			-->
+
 			<tr>
 				<td colspan="6">
 					<span style="font-size: 12px"><br></span>
@@ -192,12 +186,7 @@
 					</p>
 				</td>
 			</tr>
-			<!--<tr>
-				<td colspan="4">
-					<span style="font-size: 12px">MSG</span>
-				</td>
-				<td colspan="2"></td>
-			</tr>-->
+
 			<tr>
 				<td colspan="3">
 					<b><u>Terms &amp; Conditions</u></b>

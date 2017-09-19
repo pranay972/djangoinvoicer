@@ -19,7 +19,7 @@ class Product (models.Model):
 
 class Bills (models.Model):
 
-    #constant
+    # constant
     COLLECTION = (
         ("1", '(CGST/SGST)'),
         ("2", '(IGST)'),
@@ -61,7 +61,7 @@ class Bills (models.Model):
 
 class BilledProducts (models.Model):
 
-    #constants
+    # constants
     CATEGORIES = (
         (5, 5),
         (12, 12),
@@ -94,6 +94,3 @@ class Tax(models.Model):
 
     def __str__(self):
         return self.tax
-
-
-

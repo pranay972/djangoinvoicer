@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
-from django.views.generic.edit import UpdateView
 
 from .forms import LoginForm, ProductAddForm, BillGenForm, TaxForm
 
@@ -165,6 +164,7 @@ def add_product_helper(request):
                 alias = data.cleaned_data['alias'],
                 price = data.cleaned_data['price'],
                 inventory = data.cleaned_data['inventory'],
+                tax = data.cleaned_data['tax']
             )
             product.save()
             return redirect('/products', {'product_success' : True})

@@ -39,7 +39,7 @@ class JSONField(models.TextField):
         return super(JSONField, self).get_db_prep_save(value)
 
 
-#create forms here
+# create forms here
 
 class LoginForm(forms.Form):
     user = forms.CharField(max_length=100)
@@ -71,20 +71,3 @@ class TaxForm(forms.ModelForm):
         model = Tax
         fields = ['tax', ]
 
-'''
-
-class Bills (models.Model):
-	invoice_date = models.DateField(default=timezone.now())
-	due_date = models.DateField(default=timezone.now())
-	to = models.CharField(max_length=100)
-
-class BilledProducts (models.Model):
-	name = models.CharField(max_length=100)
-	quantity = models.IntegerField(default=0)
-	price = models.FloatField()
-	bill = models.ForeignKey(Bills)
-
-	def __str__ (self):
-		return self.name
-
-'''
