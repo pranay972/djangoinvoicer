@@ -49,15 +49,7 @@ class ProductAddForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ['name', 'alias']
-
-    name = forms.CharField(max_length=100, label = "Name")
-    alias = forms.CharField(max_length=100, label = "Alias")
-    price = forms.FloatField(label = "Price", validators=[MinValueValidator(0)])
-    hsn_code = forms.CharField(label="HSN Code", required=False)
-    inventory = forms.IntegerField(required=False, label = "Inventory",
-                                   validators=[MinValueValidator(0)])
-    tax = forms.FloatField(validators=[MinValueValidator(0)])
+        fields = ['name', 'alias', 'price', 'inventory', 'hsn_code', 'tax']
 
 class BillGenForm(forms.ModelForm):
     class Meta:

@@ -5,13 +5,21 @@ from django.utils import timezone
 # Create your models here.
 
 class Product (models.Model):
+    # constants
+    CATEGORIES = (
+        (5, 5),
+        (12, 12),
+        (18, 18),
+        (28, 28),
+    )
+
     name = models.CharField(max_length=100)
     alias = models.CharField(max_length=100)
     price = models.FloatField(validators=[MinValueValidator(0)])
     inventory = models.IntegerField(default=0,
                                     validators=[MinValueValidator(0)])
     hsn_code = models.CharField(max_length=8, blank=True)
-    tax = models.FloatField(validators=[MinValueValidator(0)])
+    tax = models.IntegerField(choices=CATEGORIES, default=5)
 
 
     def __str__ (self):
