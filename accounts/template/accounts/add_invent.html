@@ -1,0 +1,153 @@
+{% extends 'accounts/base.html' %}
+
+{% block content %}
+<body>
+
+<script>
+function sendData(){
+  console.log('i am here');
+  var params = {
+    'csrfmiddlewaretoken' : '{{ csrf_token }}',
+    'product' : document.getElementsByName('{{ form.product.name }}')[0].value,
+    'source' : document.getElementsByName('{{ form.source.name }}')[0].value,
+    'cprice' : document.getElementsByName('{{ form.cprice.name }}')[0].value,
+    'quantity' : document.getElementsByName('{{ form.quantity.name }}')[0].value
+  };
+  $.post(
+    "/gen_invent",
+    params,
+    function(data, status){
+    }
+  ).fail(function(){
+    alert("Send Failed !");
+  });
+  return true;
+}
+</script>
+
+  <form id="form">
+      {% csrf_token %}
+      <table> {{ form }} </table>
+      <button onclick="sendData()" class="btn waves-light waves-effect right">Submit</button>
+  </form>
+
+
+
+<!--
+
+  <script type="text/javascript">
+
+		{% autoescape off %}
+		var data = {{ data }}
+		{% endautoescape %}
+
+		function getAutocomplete(){
+			temp = {}
+			data.forEach(function(item){
+				temp[item.name] = null
+			});
+			return temp
+		}
+
+		var selected = [];
+		var temp = {};
+
+		function sendData(){
+			var params = {
+				'csrfmiddlewaretoken' : '{{ csrf_token }}',
+        'product' : document.getElementById('name_custom').value;
+				'cost' : document.getElementById('cost_custom').value;
+				'quantity' : document.getElementById('quantity_custom').value;
+				'source' : document.getElementById('source_custom').value;
+			};
+			$.post(
+				"/gen_invent",
+				params,
+				function(data, status){
+					var res = data.split("#")
+					if (res[0] == "success"){
+						console.log('done');
+					} else {
+						console.log('not done');
+					}
+				}
+			).fail(function(){
+				alert("Send Failed !");
+			});
+		}
+
+		$(document).ready(function(){
+
+			$('select').material_select();
+
+			setCsrf('{{ csrf_token }}');
+
+			$('textarea.autocomplete').autocomplete({
+				data: getAutocomplete(),
+				limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+				onAutocomplete: function(val, data) {
+					//TODO
+					// Callback function when value is autcompleted.
+				},
+				minLength: 1, // The minimum length of the input for the autocomplete to start. Default: 1.
+			});
+
+			{% autoescape off %}
+			var data = {{ data }}
+			{% endautoescape %}
+
+		});
+	</script>
+
+
+{% include 'accounts/navigation.html' %}
+{% csrf_token %}
+<form  id="form">
+  <div class="row" id="products">
+    <table class="centered striped">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Source</th>
+          <th>Quantity</th>
+          <th>Cost</th>
+        </tr>
+      </thead>
+      <tbody id="add_product">
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row">
+    <div class="input-field col s3">
+      <textarea id="name_custom" class="materialize-textarea autocomplete"></textarea>
+      <label for="name_custom">Name</label>
+    </div>
+    <div class="input-field col s3">
+      <textarea id="source_custom" class="materialize-textarea autocomplete"></textarea>
+      <label for="source_custom">Source</label>
+    </div>
+    <div class="input-field col s2">
+      <input type="number" id="quantity_custom"></input>
+      <label for="quantity_custom">Quantity</label>
+    </div>
+    <div class="input-field col s2">
+      <input type="number" id="cost_custom"></input>
+      <label for="cost_custom">Cost</label>
+    </div>
+
+    <div class="col s2">
+      <input type="number" id="id_custom" value="-1" hidden="true"></input>
+      <button onclick="sendData(); return false;" class="btn waves-light waves-effect right">Add Entry</button>
+    </div>
+  </div>
+  </form>
+
+<script>
+    $(document).ready(function() {
+        $('select').material_select();
+    });
+</script>
+</body>
+-->
+{% endblock %}
