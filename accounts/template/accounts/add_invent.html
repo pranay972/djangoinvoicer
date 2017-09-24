@@ -5,10 +5,19 @@
 
 <script>
 function sendData(){
-  console.log('i am here');
-  var params = {
+  pname = document.getElementsByName('pr_name')[0].value;
+  console.log('this is pname : ' + pname);
+  {% autoescape off %}
+		var d = {{ prod }};
+  {% endautoescape %}
+console.log(d);
+    for(var i=0; i<d.length; i++){
+        if(pname==d[i].name){
+console.log('sending : ' + d[i].id);
+
+        var params = {
     'csrfmiddlewaretoken' : '{{ csrf_token }}',
-    'product' : document.getElementsByName('{{ form.product.name }}')[0].value,
+    'product' : d[i].id,
     'source' : document.getElementsByName('{{ form.source.name }}')[0].value,
     'cprice' : document.getElementsByName('{{ form.cprice.name }}')[0].value,
     'quantity' : document.getElementsByName('{{ form.quantity.name }}')[0].value
@@ -22,16 +31,70 @@ function sendData(){
     alert("Send Failed !");
   });
   return true;
+        }
+    }
+    alert("Enter Valid Product");
 }
 </script>
+{% include 'accounts/navigation.html' %}
+
+    <div class="container">
+
+		<div class="row">
+			<blockquote>
+				<h4>Add to Inventory</h4>
+			</blockquote>
+		</div>
+
 
   <form id="form">
       {% csrf_token %}
-      <table> {{ form }} </table>
-      <button onclick="sendData()" class="btn waves-light waves-effect right">Submit</button>
+<div class="row">
+                <div class="input-field col m3 l3"></div>
+				<div class="input-field col s12 m6 l6">
+					<input type="text" name="pr_name" list="prs"/>
+                    <datalist id="prs">
+                        {% for x in prod %}
+                        <option>{{ x.name }}</option>
+                        {% endfor %}
+                    </datalist>
+                    <label for="{{form.product.id_for_label}}">Product</label>
+				</div>
+</div>
+      <div class="row">
+                <div class="input-field col m3 l3"></div>
+				<div class="input-field col s12 m6 l6">
+                    {{form.cprice.errors}}
+					{{form.cprice}}
+					<label for="{{form.cprice.id_for_label}}">Cost</label>
+				</div>
+      </div>
+      <div class="row">
+                <div class="input-field col m3 l3"></div>
+				<div class="input-field col s12 m6 l6">
+                    {{form.source.errors}}
+					{{form.source}}
+					<label for="{{form.source.id_for_label}}">Source</label>
+				</div>
+      </div>
+      <div class="row">
+                <div class="input-field col m3 l3"></div>
+				<div class="input-field col s12 m6 l6">
+                    {{form.quantity.errors}}
+					{{form.quantity}}
+					<label for="{{form.quantity.id_for_label}}">Quantity</label>
+				</div>
+      </div>
+      <div class="row">
+                <div class="input-field col m3 l3"></div>
+				<div class="input-field col s12 m6 l6" >
+
+      <button onclick="sendData()" class="btn waves-light waves-effect right" style="width: 100%">ADD ENTRY</button>
+				</div>
+			</div>
   </form>
 
-
+    </div>
 
 <!--
 

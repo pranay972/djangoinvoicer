@@ -66,7 +66,7 @@ def add_inventory(request):
         })
     import json
     data = json.dumps(data)
-    return render(request, 'accounts/add_invent.html', {'form':form, 'data' : data})
+    return render(request, 'accounts/add_invent.html', {'form':form, 'prod' : data})
 
 
 @login_required
@@ -255,11 +255,14 @@ def gen_invent(request):
         form = InventoryAddForm(request.POST)
         if form.is_valid():
             invent = Inventory.objects.create(
-                product = 1,
+                product = form.cleaned_data['product'],
                 quantity = form.cleaned_data['quantity'],
                 source = form.cleaned_data['source'],
                 cprice = form.cleaned_data['cprice']
             )
+            product = Product.objects.get(pk=invent.product)
+            product.inventory = product.inventory + invent.quantity
+            product.save()
             invent.save()
             return HttpResponse("success#"+str(invent.pk))
         else:
