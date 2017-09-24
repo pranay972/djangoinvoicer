@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import MinValueValidator
-from .models import Product, Tax, Bills
+from .models import Product, Tax, Bills, Inventory
 from django.core.serializers.json import DjangoJSONEncoder
 import json
 from django.db import models
@@ -63,3 +63,7 @@ class TaxForm(forms.ModelForm):
         model = Tax
         fields = ['tax', ]
 
+class InventoryAddForm(forms.ModelForm):
+    class Meta:
+        model = Inventory
+        fields = ['product', 'source', 'cprice', 'quantity']
