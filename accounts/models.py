@@ -1,6 +1,7 @@
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
+from datetime import datetime
 
 # Create your models here.
 
@@ -24,6 +25,16 @@ class Product (models.Model):
 
     def __str__ (self):
         return self.name
+
+class Inventory (models.Model):
+    product = models.IntegerField(blank=False, validators=[MinValueValidator(0)])
+    source = models.CharField(max_length=100)
+    cprice = models.FloatField(validators=[MinValueValidator(0)])
+    quantity = models.IntegerField(default=1, validators=[MinValueValidator(0)])
+    on = models.DateTimeField(default=datetime.now,blank=False)
+    def __str__ (self):
+        return self.source
+
 
 class Bills (models.Model):
 

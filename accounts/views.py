@@ -3,9 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth.decorators import login_required
 from django.db.models import F
 
-from .forms import LoginForm, ProductAddForm, BillGenForm, TaxForm
+from .forms import LoginForm, ProductAddForm, BillGenForm, TaxForm, InventoryAddForm
 
-from .models import Product, Bills, BilledProducts, Tax
+from .models import Product, Bills, BilledProducts, Tax, Inventory
 
 
 @login_required
@@ -50,6 +50,23 @@ def gen_bill_view(request):
     import json
     data = json.dumps(data)
     return render(request, 'accounts/bill_gen.html', {'form':form, 'data' : data})
+
+
+@login_required
+def add_inventory(request):
+    form = InventoryAddForm()
+    data = []
+    for product in Product.objects.all():
+        data.append({
+            'name' : product.name,
+            'price' : product.price,
+            'id' : product.id,
+            'inventory' : product.inventory,
+            'hsn_code' : product.hsn_code
+        })
+    import json
+    data = json.dumps(data)
+    return render(request, 'accounts/add_invent.html', {'form':form, 'prod' : data})
 
 
 @login_required
@@ -229,5 +246,26 @@ def search_product(request, query):
         import json
         data = json.dumps(data)
         return HttpResponse(data)
+    else:
+        raise Http404()
+
+
+def gen_invent(request):
+    if request.method == "POST":
+        form = InventoryAddForm(request.POST)
+        if form.is_valid():
+            invent = Inventory.objects.create(
+                product = form.cleaned_data['product'],
+                quantity = form.cleaned_data['quantity'],
+                source = form.cleaned_data['source'],
+                cprice = form.cleaned_data['cprice']
+            )
+            product = Product.objects.get(pk=invent.product)
+            product.inventory = product.inventory + invent.quantity
+            product.save()
+            invent.save()
+            return HttpResponse("success#"+str(invent.pk))
+        else:
+            return HttpResponse(str(form.errors))
     else:
         raise Http404()
