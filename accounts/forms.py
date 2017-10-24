@@ -50,6 +50,14 @@ class ProductAddForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'alias', 'price', 'inventory', 'hsn_code', 'tax']
+        labels = {
+            'name' : 'Name',
+            'alias' : 'Alias',
+            'price' : 'Price',
+            'inventory' : 'Inventory',
+            'hsn_code' : 'HSN Code',
+            'tax' : 'Tax Category'
+        }
 
 class BillGenForm(forms.ModelForm):
     class Meta:
