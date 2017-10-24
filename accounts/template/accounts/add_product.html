@@ -2,46 +2,26 @@
 
 {% block content %}
 <body>
+{% if nav %}
 {% include 'accounts/navigation.html' %}
-<form method="POST" action="/add_product">
-    {% csrf_token %}
-    <div class="modal-content row">
-        <div class="input-field col s6">
-            {{ form.name.errors }}
-            {{ form.name }}
-            <label for="{{ form.name.id_for_label }}">Name</label>
+{% endif %}
+<div class="container">
+    <form method="POST" action="/add_product" class="row">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="input-field col s12 m6">
+                {{ field.errors }}
+                {{ field }}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            </div>
+        {% endfor %}
+        <div class="col s12">
+            <center>
+                <button type="submit" class="modal-action btn waves-effect waves-light">Add</button>  
+            </center>
         </div>
-        <div class="input-field col s6">
-            {{ form.alias.errors }}
-            {{ form.alias }}
-            <label for="{{ form.alias.id_for_label }}">Alias</label>
-        </div>
-        <div class="input-field col s6">
-            {{ form.price.errors }}
-            {{ form.price }}
-            <label for="{{ form.price.id_for_label }}">Price</label>
-        </div>
-        <div class="input-field col s6">
-            {{ form.inventory.errors }}
-            {{ form.inventory }}
-            <label for="{{ form.inventory.id_for_label }}">Inventory</label>
-        </div>
-        <div class="input-field col s6">
-            {{ form.hsn_code.errors }}
-            {{ form.hsn_code }}
-            <label for="{{ form.hsn_code.id_for_label }}">HSN Code</label>
-        </div>
-        <div class="input-field col s6">
-            {{ form.tax.errors }}
-            {{ form.tax }}
-            <label for="{{ form.tax.id_for_label }}">Tax %</label>
-        </div>
-    </div>
-    <div class="clearfix"></div>
-    <div class="modal-footer">
-        <button type="submit" class="modal-action btn waves-effect waves-light">Add</button>
-    </div>
-</form>
+    </form>
+</div>
 <script>
     $(document).ready(function() {
         $('select').material_select();

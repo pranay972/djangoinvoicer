@@ -173,6 +173,7 @@ def del_product_helper(request, id):
 
 @login_required
 def add_product_helper(request):
+    nav = not 'no_nav' in request.GET
     if request.method == "POST":
         data = ProductAddForm(request.POST)
         if data.is_valid():
@@ -186,10 +187,10 @@ def add_product_helper(request):
             product.save()
             return redirect('/products', {'product_success' : True})
         else:
-            return render(request, 'accounts/add_product.html', {'form' : data})
+            return render(request, 'accounts/add_product.html', {'form' : data, 'nav' : nav})
     elif request.method == "GET":
         form = ProductAddForm()
-        return render(request, 'accounts/add_product.html', {'form' : form})
+        return render(request, 'accounts/add_product.html', {'form' : form, 'nav' : nav})
     else:
         raise Http404()
 
